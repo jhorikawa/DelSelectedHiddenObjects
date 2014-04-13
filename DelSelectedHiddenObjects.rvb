@@ -1,0 +1,35 @@
+﻿Option Explicit
+'Script written by <Junichiro Horikawa>
+'Script copyrighted by <Junichiro Horikawa>
+'Script version 2011年11月19日 11:12:23
+
+Call Main()
+Sub Main()
+	Dim arrObjs,strPt
+	
+	Rhino.EnableRedraw(False)
+	Rhino.UnSelectAllObjects
+	strPt = Rhino.AddPoint(Array(0, 0, 0))
+	Rhino.SelectObject(strPt)
+	Rhino.UnSelectAllObjects
+	Rhino.EnableRedraw(True)
+	
+	Rhino.Command("_ShowSelected")
+	
+	Rhino.EnableRedraw(False)
+	
+	If Rhino.LastCommandResult() = 0 Then
+		
+		Rhino.Command("_SelPrev")
+		arrObjs = Rhino.SelectedObjects()
+		If Not IsArray(arrObjs) Then 
+			Rhino.EnableRedraw(True)
+			Exit Sub
+		End If
+		
+		Rhino.DeleteObjects(arrObjs)
+		
+	End If
+	Rhino.DeleteObject(strPt)
+	Rhino.EnableRedraw(True)
+End Sub
